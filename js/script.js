@@ -73,7 +73,7 @@ const cards = [{
     },
 
     picture: 'images/g.png',  // da inserire immagine
-    cardType: cardTypes[1],
+    cardType: cardTypes[2],
     cardObject: 'Bear',
 
     editionType: editions['BL'],
@@ -100,7 +100,7 @@ const cards = [{
     },
 
     picture: 'images/g.png',  // da inserire immagine
-    cardType: cardTypes[1],
+    cardType: cardTypes[3],
     cardObject: 'Pokemon',
 
     editionType: editions['SP'],
@@ -128,7 +128,7 @@ const cards = [{
     },
 
     picture: 'images/g.png',  // da inserire immagine
-    cardType: cardTypes[1],
+    cardType: cardTypes[3],
     cardObject: 'Enchant',
 
     editionType: editions['BL'],
@@ -155,7 +155,7 @@ const cards = [{
     },
 
     picture: 'images/g.png',  // da inserire immagine
-    cardType: cardTypes[1],
+    cardType: cardTypes[5],
     cardObject: 'Bear',
 
     editionType: editions['BL'],
@@ -172,17 +172,15 @@ const cards = [{
 ]
 
 // LOGICA
-//creiamo una funz che filtra l'array a seconda del valore di power
+//funzione che filtra l'array a seconda del valore di power
 function filterByPower(arr, powerValue){
   return arr.filter(el => el.score.power === powerValue);
 };
 
-//creiamo una funz che filtra l'array a seconda del valore di card-type
-function filteredByCardType(arr, cardTypeValue){
-  return arr.filter(el => el.cardType === cardTypevalue);
+//funzione che filtra l'array a seconda del valore di card-type
+function filterByCardType(arr, value){
+  return arr.filter(el => el.cardType === value);
 };
-
-// console.log(filterByPower(cards, 5))
 
 //funzione per renderizzare le carte
 function renderCards(domTarget, array) {
@@ -220,21 +218,48 @@ function renderSelect(domTarget, array) {
 const cardsContainer = document.querySelector(".cards-container"); //definizione del target
 renderCards(cardsContainer, cards);
 
-//rendering della select in base ai valori di select disponibili decis in powerValues
+//rendering della select power in base ai valori di select disponibili in powerValues
 const cardsSelector = document.querySelector("#cards-selection"); //definizione del target
 renderSelect(cardsSelector, powerValues);
+
+//rendering della select cardType in base ai valori di select disponibili in cardTypes
+const cardsTypeSelector = document.querySelector("#cards-selection-type"); //definizione del target
+renderSelect(cardsTypeSelector, cardTypes);
 
 //selezione power
 $("#cards-selection").change(function() {
   if(isNaN($(this).val())) {
+
+    //se livello di potere non è stato selezionato, mostra tutte le cards
     renderCards(cardsContainer, cards)
-    
+
   } else {
+
+    //prendi valore da select e crea un nuovo arrai di cards con power corrispondente a quel valore
     const selectedValue = parseInt($(this).val());
     const filteredArray = filterByPower(cards, selectedValue);
 
     renderCards(cardsContainer, filteredArray)
   }
 })
+
+//selezione type
+$("#cards-selection-type").change(function() {
+  if($(this).val() === "all") {
+
+    //se livello di potere non è stato selezionato, mostra tutte le cards
+    renderCards(cardsContainer, cards)
+
+  } else {
+
+    //prendi valore da select e crea un nuovo arrai di cards con power corrispondente a quel valore
+    const selectedValue = $(this).val();
+    const filteredArray = filterByCardType(cards, selectedValue);
+
+    renderCards(cardsContainer, filteredArray)
+  }
+})
+
+
 
 
