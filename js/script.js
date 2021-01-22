@@ -1,4 +1,4 @@
-//DATI
+// DATI
 const fieldCodes = [
   'W', 'U', 'B', 'R', 'G'
 ]
@@ -171,6 +171,7 @@ const cards = [{
     },
 ]
 
+
 // LOGICA
 //funzione che filtra l'array a seconda del valore di power
 function filterByPower(arr, powerValue){
@@ -192,9 +193,34 @@ function renderCards(domTarget, array) {
   } else {
     array.forEach(el => {
       content += `
-        <div class="card">
-        <h1>${el.cardName}</h1>
+      <div class="card">
+        <div class="top-container">
+          <h2>${el.cardName}</h2>
+          <div class="cost-container">
+          <span class="generic">${el.cost.genericCostNumber}</span>
+          <span class="fields"></span>
+          </div>
         </div>
+        <div class="img-container">
+          <img src="#" alt="immagine carta">
+        </div>
+        <div class="mid-container">
+          <span class="card-type">${el.cardType}</span>
+          <span class="card-object">${el.cardObject}</span>
+          <span class="edition-type" style="background-color: ${el.editionType.rarity}">${el.editionType.edition}</span>
+        </div>
+        <div class="description-container">
+          <p class="description">${el.description}</p>
+          <p class="story">${el.story}</p>
+        </div>
+        <div class="bottom-container">
+          <div class="credits">
+            <span class="artist"></span><br>
+            <span class="copy"></span>
+          </div>
+          <div class="score">${el.score.power}/${el.score.toughness}</div>
+        </div>
+      </div>
       `
     })
   }
@@ -213,6 +239,28 @@ function renderSelect(domTarget, array) {
   domTarget.innerHTML += content;
 }
 
+//???? non funziona: come faccio a passare la funzione come parametro in modo corretto ????
+//funzione per prendere il valore di select e rirenderizzare la pagina dopo ogni change
+// function displayOnChange(target, fn) {
+//   $(target).change(function() {
+//     if($(this).val() === "all") {
+  
+//       //se non è stato selezionato alcun livello, mostra tutte le cards
+//       renderCards(cardsContainer, cards)
+  
+//     } else {
+  
+//       //prendi valore da select e crea un nuovo arrai di cards corrispondenti a quel valore
+//       const selectedValue = $(this).val();
+//       const filteredArray = fn(cards, selectedValue);
+  
+//       renderCards(cardsContainer, filteredArray)
+//     }
+//   })
+// }
+// // Es: displayOnChange("#cards-selection-type", filterByCardType)
+
+
 // OUTPUT
 //rendering iniziale dell'array completo: quello che vediamo al caricamento
 const cardsContainer = document.querySelector(".cards-container"); //definizione del target
@@ -226,7 +274,7 @@ renderSelect(cardsSelector, powerValues);
 const cardsTypeSelector = document.querySelector("#cards-selection-type"); //definizione del target
 renderSelect(cardsTypeSelector, cardTypes);
 
-//selezione power
+//rirendering della pagina in seguito a change in select power
 $("#cards-selection").change(function() {
   if(isNaN($(this).val())) {
 
@@ -243,7 +291,7 @@ $("#cards-selection").change(function() {
   }
 })
 
-//selezione type
+//rirendering della pagina in seguito a change in select cardType
 $("#cards-selection-type").change(function() {
   if($(this).val() === "all") {
 
@@ -259,6 +307,7 @@ $("#cards-selection-type").change(function() {
     renderCards(cardsContainer, filteredArray)
   }
 })
+
 
 
 
